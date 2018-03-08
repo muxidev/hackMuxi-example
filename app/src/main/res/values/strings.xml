@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">MyPaymentApplicationExample</string>
+
+    <!--Transaction Status Dialog Labels-->
+    <string name="dialog_transaction_status">Transaction Status</string>
+    <string name="dialog_transactionstate">TransactionState:</string>
+    <string name="dialog_transaction_finished_status">Transaction Finished Status:</string>
+    <string name="dialog_missing_data">Missing Data:</string>
+    <string name="dialog_description_message">Description Message:</string>
+    <string name="dialog_transaction_id">Transaction ID:</string>
+    <string name="dialog_transaction_authorization_number">Transaction Authorization Number:</string>
+    <string name="dialog_receipt_text">Receipt Text:</string>
+
+
+</resources>

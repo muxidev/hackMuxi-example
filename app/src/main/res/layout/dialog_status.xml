@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="@dimen/dialog_small_margin">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/dialog_transaction_status"
+        android:textSize="@dimen/dialog_title_text_size"
+        />
+
+    <TextView
+        android:id="@+id/dialog_tran_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/dialog_transactionstate"
+        android:textSize="@dimen/dialog_content_text_size"
+        android:layout_marginTop="@dimen/dialog_small_margin"/>
+
+    <TextView
+        android:id="@+id/dialog_tran_finished_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/dialog_transaction_finished_status"
+        android:textSize="@dimen/dialog_content_text_size"
+        android:layout_marginTop="@dimen/dialog_small_margin"/>
+
+    <TextView
+        android:id="@+id/dialog_tran_missing_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/dialog_missing_data"
+        android:textSize="@dimen/dialog_content_text_size"
+        android:layout_marginTop="@dimen/dialog_small_margin"/>
+
+    <TextView
+        android:id="@+id/dialog_tran_description_msg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/dialog_description_message"
+        android:textSize="@dimen/dialog_content_text_size"
+        android:layout_marginTop="@dimen/dialog_small_margin"/>
+
+    <TextView
+        android:id="@+id/dialog_tran_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/dialog_transaction_id"
+        android:textSize="@dimen/dialog_content_text_size"
+        android:layout_marginTop="@dimen/dialog_small_margin"/>
+
+    <TextView
+        android:id="@+id/dialog_tran_aut_num"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/dialog_transaction_authorization_number"
+        android:textSize="@dimen/dialog_content_text_size"
+        android:layout_marginTop="@dimen/dialog_small_margin"/>
+
+    <TextView
+        android:id="@+id/dialog_tran_receipt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/dialog_receipt_text"
+        android:textSize="@dimen/dialog_content_text_size"
+        android:layout_marginTop="@dimen/dialog_small_margin"/>
+
+
+</LinearLayout>
