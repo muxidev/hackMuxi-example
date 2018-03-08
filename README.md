@@ -1,2 +1,3 @@
-# hackMuxi-example
-Example of application using POSWEB Pay Services
+# POSWEB Pay Services example
+
+This application is an usage example of POSWEB Pay Service usage. 
