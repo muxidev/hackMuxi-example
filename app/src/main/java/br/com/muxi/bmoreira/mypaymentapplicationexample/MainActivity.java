@@ -7,12 +7,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import br.com.muxi.bmoreira.pwpservices_sdk.PWPServicesSDK.Service.PWPSInitListener;
-import br.com.muxi.bmoreira.pwpservices_sdk.PWPServicesSDK.data.PWPSTransaction;
-import br.com.muxi.bmoreira.pwpservices_sdk.PWPServicesSDK.Service.PWPSPaymentListener;
-import br.com.muxi.bmoreira.pwpservices_sdk.PWPServicesSDK.Service.PWPServicesManager;
+import muxi.pwps.sdk.data.PWPSCard;
+import muxi.pwps.sdk.service.PWPSInitListener;
+import muxi.pwps.sdk.data.PWPSTransaction;
+import muxi.pwps.sdk.service.PWPSPaymentListener;
+import muxi.pwps.sdk.service.PWPServicesManager;
 
-import br.com.muxi.bmoreira.pwpservices_sdk.PWPServicesSDK.data.PWPSTransactionResult;
+import muxi.pwps.sdk.data.PWPSTransactionResult;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -65,29 +66,51 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void callPayment(PWPSTransaction pwpsTransaction){
 
+    PWPSPaymentListener paymentListener = new PWPSPaymentListener() {
+        @Override
+        public void onPaymentSucess(PWPSTransactionResult transactionStatus) {
+            Log.d(TAG, "onPaymentSucess " + transactionStatus.toString());
+            Toast.makeText(MainActivity.this, "onPaymentSucess", Toast.LENGTH_SHORT).show();
+
+            result.setText(transactionStatus.getClientReceipt());
+        }
+
+        @Override
+        public void onPaymentError(PWPSTransactionResult transactionStatus) {
+            Log.d(TAG, "onPaymentError " + transactionStatus.getExtraInfo());
+            Toast.makeText(MainActivity.this, "onPaymentError", Toast.LENGTH_SHORT).show();
+
+            result.setText(transactionStatus.getExtraInfo());
+        }
+    };
+
+    private void callPayment(PWPSTransaction pwpsTransaction, boolean pinpad){
         if(initLib) {
-            pwpServicesManager.makePayment(pwpsTransaction, new PWPSPaymentListener() {
-                @Override
-                public void onPaymentSucess(PWPSTransactionResult transactionStatus) {
-                    Log.d(TAG, "onPaymentSucess " + transactionStatus.toString());
-                    Toast.makeText(MainActivity.this, "onPaymentSucess", Toast.LENGTH_SHORT).show();
-
-                    result.setText(transactionStatus.getClientReceipt());
-                }
-
-                @Override
-                public void onPaymentError(PWPSTransactionResult transactionStatus) {
-                    Log.d(TAG,"onPaymentError "+ transactionStatus.getStatusMessage());
-                    Toast.makeText(MainActivity.this, "onPaymentError", Toast.LENGTH_SHORT).show();
-
-                    result.setText(transactionStatus.getStatusMessage());
-                }
-            });
+            if (pinpad){
+                pwpServicesManager.makePayment(pwpsTransaction,paymentListener);
+            }else{
+                callPaymentWihoutPinpad(pwpsTransaction);
+            }
         }else{
             Log.e(TAG, "Lib isnt initilized. end call payment");
         }
+
+    }
+
+    private void callPaymentWihoutPinpad(PWPSTransaction pwpsTransaction){
+
+        PWPSCard pwpsCard = new PWPSCard();
+        pwpsCard.setCvv("006");
+        pwpsCard.setExpMonth("06");
+        pwpsCard.setExpYear("2021");
+        pwpsCard.setFirstName("TATIANA");
+        pwpsCard.setLastName("ALMEIDA");
+        pwpsCard.setNameOnCard("TATIANA L ALMEIDA");
+        pwpsCard.setNumber("4220612449662574");
+
+
+        pwpServicesManager.makePayment(pwpsCard,pwpsTransaction,paymentListener);
     }
 
     @OnClick(R.id.btn_pay)
@@ -109,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (pwpServicesManager != null) {
             result.setText("");
-            callPayment(transaction);
+            callPayment(transaction,true);
         } else {
             result.setText("You should starts the service first!");
             Toast.makeText(this, "You should start the service first!", Toast.LENGTH_SHORT).show();
