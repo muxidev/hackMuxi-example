@@ -1,9 +1,13 @@
 package br.com.muxi.bmoreira.mypaymentapplicationexample;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     TextView result;
     @BindView(R.id.value)
     TextView value;
-
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +49,21 @@ public class MainActivity extends AppCompatActivity {
     public void onClickMuxiPay(View v) {
         if (pwpServicesManager != null) {
 
+            createProgressBar();
             Log.d(TAG, "pwpServicesManager.startService");
             pwpServicesManager.startService(new PWPSInitListener() {
                 @Override
                 public void onInitSuccess() {
+                    alertDialog.dismiss();
                     initLib = true;
                     Toast.makeText(MainActivity.this, "onInitSuccess", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onInitSuccess");
+
                 }
 
                 @Override
                 public void onInitError() {
+                    alertDialog.dismiss();
                     Toast.makeText(MainActivity.this, "onInitError", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onInitError");
                 }
@@ -63,6 +71,25 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Log.e(TAG, "onClickMuxiPay error pwpServicesManager != null");
         }
+
+    }
+
+    private void createProgressBar() {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        alertDialogBuilder.setView(R.layout.dialog);
+
+        alertDialog = alertDialogBuilder.create();
+
+        alertDialog.setCancelable(false);
+
+        Window window = alertDialog.getWindow();
+        if(window != null){
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        alertDialog.show();
 
     }
 
