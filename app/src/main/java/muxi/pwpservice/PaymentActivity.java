@@ -12,16 +12,15 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import muxi.pwps.sdk.data.PWPSCard;
-import muxi.pwps.sdk.service.PWPSInitListener;
-import muxi.pwps.sdk.data.PWPSTransaction;
-import muxi.pwps.sdk.service.PWPSPaymentListener;
-import muxi.pwps.sdk.service.PWPServicesManager;
-
-import muxi.pwps.sdk.data.PWPSTransactionResult;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import muxi.pwps.sdk.data.PWPSCard;
+import muxi.pwps.sdk.data.PWPSTransaction;
+import muxi.pwps.sdk.data.PWPSTransactionResult;
+import muxi.pwps.sdk.service.PWPSInitListener;
+import muxi.pwps.sdk.service.PWPSPaymentListener;
+import muxi.pwps.sdk.service.PWPServicesManager;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -200,26 +199,25 @@ public class PaymentActivity extends AppCompatActivity {
     public void onClickPay(View v) {
         // Make your payment!
 
-        int amount;
-        String valueS = value.getText().toString();
-        if (valueS.equals("")) {
-            amount = 1000;
+        String amount = value.getText().toString();
+        if (amount.equals("")) {
+            value.setError("Empty value!!");
         } else {
-            amount = Integer.parseInt(valueS);
-        }
-        // Fill Transaction Information
-        transaction = new PWPSTransaction();
-        transaction.setAmount(amount);
-        transaction.setCurrency(PWPSTransaction.CurrencyType.BRL);
-        transaction.setType(PWPSTransaction.TransactionType.CREDIT);
+            // Fill Transaction Information
+            transaction = new PWPSTransaction();
+            transaction.setAmount(amount);
+            transaction.setCurrency(PWPSTransaction.CurrencyType.BRL);
+            transaction.setType(PWPSTransaction.TransactionType.CREDIT);
 
-        if (pwpServicesManager != null) {
-            result.setText("");
-            callPayment(transaction,usePinpad);
-        } else {
-            result.setText("You should starts the service first!");
-            Toast.makeText(this, "You should start the service first!", Toast.LENGTH_SHORT).show();
+            if (pwpServicesManager != null) {
+                result.setText("");
+                callPayment(transaction,usePinpad);
+            } else {
+                result.setText("You should starts the service first!");
+                Toast.makeText(this, "You should start the service first!", Toast.LENGTH_SHORT).show();
+            }
         }
+
     }
 
 }
