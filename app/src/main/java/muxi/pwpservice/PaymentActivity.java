@@ -172,7 +172,7 @@ public class PaymentActivity extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         switch (type){
             case INIT_TYPE:
-//                alertDialogBuilder.setView(R.layout.dialog);
+                alertDialogBuilder.setView(R.layout.dialog);
                 alertDialog = alertDialogBuilder.create();
                 Window window = alertDialog.getWindow();
                 if(window != null){
