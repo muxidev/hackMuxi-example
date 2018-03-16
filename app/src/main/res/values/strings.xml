@@ -10,6 +10,7 @@
     <string name="dialog_transaction_id">Transaction ID:</string>
     <string name="dialog_transaction_authorization_number">Transaction Authorization Number:</string>
     <string name="dialog_receipt_text">Receipt Text:</string>
+    <string name="go_payment">Go to Payement</string>
 
 
 </resources>
