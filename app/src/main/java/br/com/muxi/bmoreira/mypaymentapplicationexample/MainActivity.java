@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "onPaymentSucess", Toast.LENGTH_SHORT).show();
 
             result.setText(transactionStatus.getClientReceipt());
+            result.setGravity(Gravity.CENTER);
         }
 
         @Override
