@@ -1,4 +1,4 @@
-package br.com.muxi.bmoreira.mypaymentapplicationexample;
+package muxi.pwpservice;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import br.com.muxi.bmoreira.mypaymentapplicationexample.R;
 import muxi.pwps.sdk.data.PWPSCard;
 import muxi.pwps.sdk.service.PWPSInitListener;
 import muxi.pwps.sdk.data.PWPSTransaction;
@@ -23,10 +24,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class PaymentActivity extends AppCompatActivity {
 
     private PWPServicesManager pwpServicesManager;
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = PaymentActivity.class.getSimpleName();
     private static final String INIT_TYPE = "Init";
     private static final String CARD_PAYMENT_TYPE = "CardPayment";
     private static final String PINPAD_PAYMENT_TYPE = "PinpadPayment";
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_payment);
         ButterKnife.bind(this);
 
     }
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onInitSuccess() {
                     alertDialog.dismiss();
                     initLib = true;
-                    Toast.makeText(MainActivity.this, "onInitSuccess", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PaymentActivity.this, "onInitSuccess", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onInitSuccess");
 
                 }
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onInitError() {
                     alertDialog.dismiss();
-                    Toast.makeText(MainActivity.this, "onInitError", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PaymentActivity.this, "onInitError", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onInitError");
                 }
             });
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         public void onPaymentSucess(PWPSTransactionResult transactionStatus) {
             alertDialog.dismiss();
             Log.d(TAG, "onPaymentSucess " + transactionStatus.toString());
-            Toast.makeText(MainActivity.this, "onPaymentSucess", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PaymentActivity.this, "onPaymentSucess", Toast.LENGTH_SHORT).show();
 
             result.setText(transactionStatus.getClientReceipt());
             result.setGravity(Gravity.CENTER);
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         public void onPaymentError(PWPSTransactionResult transactionStatus) {
             alertDialog.dismiss();
             Log.d(TAG, "onPaymentError " + transactionStatus.getExtraInfo());
-            Toast.makeText(MainActivity.this, "onPaymentError", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PaymentActivity.this, "onPaymentError", Toast.LENGTH_SHORT).show();
 
             result.setText(transactionStatus.getExtraInfo());
         }
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         switch (type){
             case INIT_TYPE:
-                alertDialogBuilder.setView(R.layout.dialog);
+//                alertDialogBuilder.setView(R.layout.dialog);
                 alertDialog = alertDialogBuilder.create();
                 Window window = alertDialog.getWindow();
                 if(window != null){
