@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
     private PWPServicesManager pwpServicesManager;
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String INIT_TYPE = "Init";
+    private static final String CARD_PAYMENT_TYPE = "CardPayment";
+    private static final String PINPAD_PAYMENT_TYPE = "PinpadPayment";
 
     private PWPSTransaction transaction;
 
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     TextView value;
     private AlertDialog alertDialog;
 
+    private boolean usePinpad = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClickMuxiPay(View v) {
         if (pwpServicesManager != null) {
 
-            createProgressBar();
+            createProgressBar(INIT_TYPE);
             Log.d(TAG, "pwpServicesManager.startService");
             pwpServicesManager.startService(new PWPSInitListener() {
                 @Override
@@ -74,29 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void createProgressBar() {
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        alertDialogBuilder.setView(R.layout.dialog);
-
-        alertDialog = alertDialogBuilder.create();
-
-        alertDialog.setCancelable(false);
-
-        Window window = alertDialog.getWindow();
-        if(window != null){
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-
-        alertDialog.show();
-
-    }
-
-
     PWPSPaymentListener paymentListener = new PWPSPaymentListener() {
         @Override
         public void onPaymentSucess(PWPSTransactionResult transactionStatus) {
+            alertDialog.dismiss();
             Log.d(TAG, "onPaymentSucess " + transactionStatus.toString());
             Toast.makeText(MainActivity.this, "onPaymentSucess", Toast.LENGTH_SHORT).show();
 
@@ -105,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onPaymentError(PWPSTransactionResult transactionStatus) {
+            alertDialog.dismiss();
             Log.d(TAG, "onPaymentError " + transactionStatus.getExtraInfo());
             Toast.makeText(MainActivity.this, "onPaymentError", Toast.LENGTH_SHORT).show();
 
@@ -112,16 +98,48 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
     private void callPayment(PWPSTransaction pwpsTransaction, boolean pinpad){
         if(initLib) {
             if (pinpad){
+                createProgressBar(PINPAD_PAYMENT_TYPE);
                 pwpServicesManager.makePayment(pwpsTransaction,paymentListener);
             }else{
+                createProgressBar(CARD_PAYMENT_TYPE);
                 callPaymentWihoutPinpad(pwpsTransaction);
             }
         }else{
             Log.e(TAG, "Lib isnt initilized. end call payment");
         }
+
+    }
+
+    private void createProgressBar(String type) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        switch (type){
+            case INIT_TYPE:
+                alertDialogBuilder.setView(R.layout.dialog);
+                alertDialog = alertDialogBuilder.create();
+                Window window = alertDialog.getWindow();
+                if(window != null){
+                    window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                }
+                break;
+            case CARD_PAYMENT_TYPE:
+                alertDialogBuilder.setMessage("Validando dados do cartão... Aguarde");
+                alertDialog = alertDialogBuilder.create();
+                break;
+            case PINPAD_PAYMENT_TYPE:
+                alertDialogBuilder.setMessage("Processando informações no Pinpad... ");
+                alertDialog = alertDialogBuilder.create();
+            default:
+                break;
+        }
+
+
+        alertDialog.setCancelable(false);
+        alertDialog.show();
 
     }
 
@@ -159,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (pwpServicesManager != null) {
             result.setText("");
-            callPayment(transaction,true);
+            callPayment(transaction,usePinpad);
         } else {
             result.setText("You should starts the service first!");
             Toast.makeText(this, "You should start the service first!", Toast.LENGTH_SHORT).show();
