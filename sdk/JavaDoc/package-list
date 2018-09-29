@@ -1,2 +1,3 @@
-muxi.pwps.sdk.data
-muxi.pwps.sdk.service
+muxi.payservices
+muxi.payservices.data
+muxi.payservices.service
